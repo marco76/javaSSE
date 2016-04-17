@@ -1,6 +1,7 @@
 package ch.javaee.example.sse.resource;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -18,7 +19,7 @@ import org.glassfish.jersey.media.sse.SseFeature;
 import ch.javaee.example.sse.helper.ParticipantListHelper;
 import ch.javaee.example.sse.model.Runner;
 
-@Path("hello_sse")
+@Path("competition")
 public class SseEventOutput {
 
 	static Logger logger = Logger.getLogger("HelloSse.class");
@@ -29,7 +30,7 @@ public class SseEventOutput {
 	
 	EventOutput eventOutput = new EventOutput();
 	
-	@Path("competition")
+	@Path("results")
 	@GET
 	@Produces(SseFeature.SERVER_SENT_EVENTS)
 	public EventOutput getServerSentEvents() {
@@ -112,11 +113,12 @@ public class SseEventOutput {
 		return eventOutput;
 	}
 	
+	
 	private OutboundEvent buildOutboundEvent(final Runner runner){
 		
 		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
 
-		eventBuilder.name("runner at the finish ... ");
+		eventBuilder.name(LocalTime.now() + " - runner at the finish ... ");
 		
 		// the runner object will be converted to JSON
 		eventBuilder.data(Runner.class, runner);

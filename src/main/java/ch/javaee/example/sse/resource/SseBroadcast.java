@@ -3,6 +3,7 @@ package ch.javaee.example.sse.resource;
 import java.util.Calendar;
 
 import javax.ejb.Singleton;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,8 +17,7 @@ import org.glassfish.jersey.media.sse.SseFeature;
 
 @Path("hello_sse_broadcast")
 @Singleton // singleton, one producer and multiple listener
-public class SseBroadcast {
-	
+public class SseBroadcast {	
 	
 	SseBroadcaster broadcaster = new SseBroadcaster();
 	
@@ -42,9 +42,9 @@ public class SseBroadcast {
 	
 	@POST
 	@Path("send")
-	public String sendData() {
+	public String sendData(@FormParam(value = "text") String text) {
 		OutboundEvent.Builder builder = new OutboundEvent.Builder();
-		builder.comment("optional comment");
+		builder.comment("optional comment: " + text);
 		builder.data(Calendar.getInstance().getTime().toString());
 		builder.mediaType(MediaType.APPLICATION_JSON_TYPE);
 		
